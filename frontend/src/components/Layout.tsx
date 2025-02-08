@@ -9,44 +9,56 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const isDoctor = location.pathname.startsWith('/doctor');
+  const isPatient = location.pathname.startsWith('/patient');
+  const isLandingPage = location.pathname === '/';
+
+  const dashboardTitle = isLandingPage
+    ? 'Welcome'
+    : isDoctor
+    ? 'Doctor Dashboard'
+    : 'Patient Dashboard';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-      {/* Top Navigation */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Menu className="h-6 w-6 text-gray-600" />
-              <span className="ml-3 text-xl font-semibold text-blue-600">
-                {isDoctor ? 'Doctor Dashboard' : 'Patient Dashboard'}
-              </span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button className="p-2 rounded-full bg-blue-50 text-blue-600">
-                <User className="h-5 w-5" />
-              </button>
+    <div className={`min-h-screen ${isLandingPage ? 'bg-white' : 'bg-gradient-to-br from-gray-50 to-blue-50'}`}>
+      {/* Top Navigation (Hidden on Landing Page) */}
+      {!isLandingPage && (
+        <header className="bg-white shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <div className="flex items-center">
+                <Menu className="h-6 w-6 text-gray-600" />
+                <span className="ml-3 text-xl font-semibold text-blue-600">
+                  {dashboardTitle}
+                </span>
+              </div>
+              <div className="flex items-center space-x-4">
+                <button className="p-2 rounded-full bg-blue-50 text-blue-600">
+                  <User className="h-5 w-5" />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className={`${isLandingPage ? 'w-full min-h-screen flex items-center justify-center p-0' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'}`}>
         {children}
       </main>
 
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 w-full bg-white border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-around py-3">
-            <NavLink to={isDoctor ? "/doctor" : "/"} icon={<Home />} label="Home" />
-            <NavLink to={isDoctor ? "/doctor/chat" : "/chat"} icon={<MessageSquare />} label="Chat" />
-            <NavLink to={isDoctor ? "/doctor/appointments" : "/appointments"} icon={<Calendar />} label="Appointments" />
-            <NavLink to={isDoctor ? "/doctor/reports" : "/reports"} icon={<FileText />} label="Reports" />
+      {/* Bottom Navigation (Only for Doctor & Patient Dashboards) */}
+      {!(isLandingPage) && (isDoctor || isPatient) && (
+        <nav className="fixed bottom-0 w-full bg-white border-t border-gray-200">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex justify-around py-3">
+              <NavLink to={isDoctor ? "/doctor" : "/patient"} icon={<Home />} label="Home" />
+              <NavLink to={isDoctor ? "/doctor/chat" : "/patient/chat"} icon={<MessageSquare />} label="Chat" />
+              <NavLink to={isDoctor ? "/doctor/appointments" : "/patient/appointments"} icon={<Calendar />} label="Appointments" />
+              <NavLink to={isDoctor ? "/doctor/reports" : "/patient/reports"} icon={<FileText />} label="Reports" />
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      )}
     </div>
   );
 }
