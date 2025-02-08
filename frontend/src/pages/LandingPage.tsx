@@ -26,7 +26,6 @@ function LandingPage() {
           <a href="#contact" className="bg-[#8CC63F] px-6 py-3 rounded-full font-bold text-white">
             Contact
           </a>
-          <span className="text-white text-xl">🔍</span>
         </div>
       </nav>
 
@@ -34,7 +33,7 @@ function LandingPage() {
       <div className="flex ">
   <button 
     onClick={() => navigate("/login")} 
-    className=" ml-[650px] px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+    className=" ml-[600px] px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
   >
     Login
   </button>
