@@ -1,4 +1,5 @@
 import React from "react";
+import image1 from "../images/image1.jpg";
 
 function LandingPage() {
   return (
@@ -48,11 +49,7 @@ function LandingPage() {
       {/* Clinical Insights Section */}
       <section className="flex items-center px-20 py-16 max-w-5xl mx-auto gap-16 relative">
         <div className="relative flex-1 min-w-[500px]">
-          <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-4WH8ItVDqB203TOl2LDxi5FIqBp5G1.png"
-            alt="Patient with cardiac monitoring device"
-            className="w-[500px] h-[500px] rounded-full object-cover"
-          />
+        <img src={image1} alt="Patient with cardiac monitoring device" className="w-[500px] h-[500px] rounded-full object-cover" />;
           <svg className="absolute bottom-12 right-[-50px] w-36 h-12" viewBox="0 0 100 20">
             <path d="M0,10 L20,10 L25,2 L35,18 L40,10 L100,10" stroke="#7FFF00" fill="none" strokeWidth="2" />
           </svg>
