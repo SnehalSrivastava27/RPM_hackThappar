@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {Layout} from './components/Layout';
 import {PatientDashboard} from './pages/PatientDashboard';
-import {DoctorDashboard} from './pages/DoctorDashboard';
-import LandingPage from './pages/LandingPage';
+import {DoctorDashboard} from './pages/DoctorDashboard1';
+import LandingPage from './pages/LandingPage1';
 import { Login, Signup } from './pages/Auth';
 
 function App() {
