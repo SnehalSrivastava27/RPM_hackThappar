@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {Layout} from './components/Layout';
 import {PatientDashboard} from './pages/PatientDashboard';
 import {DoctorDashboard} from './pages/DoctorDashboard';
-import LandingPage from './pages/LandingPage';
+import LandingPage from './pages/LandingPage1';
 import { Login, Signup } from './pages/Auth';
+import DoctorDashboardAppointment from './pages/DoctorDashboardAppointment';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/patient" element={<PatientDashboard />} />
           <Route path='/signup' element={<Signup/>}></Route>
           <Route path='/login' element={<Login/>}></Route> 
+          <Route path='/doctor/appointments' element={<DoctorDashboardAppointment/>}></Route>
         </Routes>
       </Layout>
     </Router>
