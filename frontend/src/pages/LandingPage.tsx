@@ -53,7 +53,7 @@ function LandingPage() {
         <div className="flex-1 max-w-lg">
           <h1 className="text-4xl leading-tight mb-4">
           How Does RPM Work? <span className="text-[#27B4E8] font-bold text-2xl">
-          Transforming health data into proactive care.
+          Transforming health data into proactive care. <br />
           ✔ Patients use smart medical devices to track vital signs. <br />
           ✔ Data is transmitted instantly to healthcare professionals. <br />
           ✔ Our team analyzes real-time insights to detect abnormalities. <br />
