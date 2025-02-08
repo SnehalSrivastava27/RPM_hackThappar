@@ -297,14 +297,19 @@ const LandingPage = () => {
           <div className="flex justify-between h-16 items-center">
             <div className="text-xl font-bold text-gray-800">HealthRakshak</div>
             <div className="hidden md:flex space-x-8">
-              {["Home", "Features", "For Stakeholders", "How It Works", "Rewards", "Testimonials", "Contact"].map(
-                (item) => (
-                  <a key={item} href={`#${item.toLowerCase()}`} className="text-gray-600 hover:text-gray-900">
-                    {item}
-                  </a>
-                ),
-              )}
-            </div>
+  {["Home", "Features", "For Stakeholders", "How It Works", "Rewards", "Login", "Signup"].map(
+    (item) => (
+      <a 
+        key={item} 
+        href={item === "Login" ? "/login" : item === "Signup" ? "/signup" : `#${item.toLowerCase()}`} 
+        className="text-gray-600 hover:text-gray-900"
+      >
+        {item}
+      </a>
+    ),
+  )}
+</div>
+
           </div>
         </div>
       </nav>
