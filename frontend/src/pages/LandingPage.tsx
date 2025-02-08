@@ -6,13 +6,6 @@ function LandingPage() {
     <div className="bg-gradient-to-br from-[#0B0B2B] to-[#1B1B4B] text-white min-h-screen">
       {/* Navbar */}
       <nav className="flex justify-between items-center py-5 px-20">
-        <div>
-          <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-CufAsqpFbVEYlPxb8Fnk9zfq0jpG6D.png"
-            alt="INFOBIONIC.Ai Logo"
-            className="h-10"
-          />
-        </div>
         <div className="flex items-center gap-10">
           {[
             "Products",
