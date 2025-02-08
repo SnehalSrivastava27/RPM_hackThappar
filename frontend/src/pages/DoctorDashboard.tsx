@@ -1,28 +1,81 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search, Users, Bell, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
-import type { Patient } from '../types';
 
-const mockPatients: Patient[] = [
-  {
-    id: '1',
-    name: 'Mr X',
-    age: 45,
-    gender: 'Male',
-    condition: 'Hypertension',
-    riskLevel: 'Moderate',
-    vitals: {
-      heartRate: 85,
-      bloodPressure: { systolic: 140, diastolic: 90 },
-      temperature: 98.6,
-      spO2: 97,
-      glucose: 110
-    },
-    lastUpdate: '5 minutes ago'
-  },
-];
+interface Patient {
+  id: string;
+  name: string;
+  age: number;
+  gender: string;
+  condition: string;
+  riskLevel: string;
+  vitals: {
+    heartRate: number;
+    bloodPressure: { systolic: number; diastolic: number };
+    temperature: number;
+    spO2: number;
+    glucose: number;
+  };
+  lastUpdate: string;
+}
+
+interface DashboardData {
+  patients: Patient[];
+  totalPatients: number;
+}
 
 export function DoctorDashboard() {
+  const [dashboardData, setDashboardData] = useState<DashboardData>({
+    patients: [],
+    totalPatients: 0
+  });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:3000/api/doctor/my-patients', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch dashboard data');
+        }
+
+        const data = await response.json();
+        setDashboardData(data);
+      } catch (err) {
+        setError('Failed to load dashboard data');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  const filteredPatients = dashboardData.patients.filter(patient =>
+    patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    patient.condition.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  const criticalPatients = dashboardData.patients.filter(p => p.riskLevel === 'High').length;
+  const todaysAppointments = 8; // This should be fetched from backend
+
   return (
     <div className="space-y-6">
       {/* Search Bar */}
@@ -32,6 +85,8 @@ export function DoctorDashboard() {
           type="text"
           placeholder="Search patients..."
           className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
@@ -47,7 +102,7 @@ export function DoctorDashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-500">Total Patients</p>
-              <p className="text-xl font-semibold">1</p>
+              <p className="text-xl font-semibold">{dashboardData.totalPatients}</p>
             </div>
           </div>
         </motion.div>
@@ -62,7 +117,7 @@ export function DoctorDashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-500">Critical Cases</p>
-              <p className="text-xl font-semibold">12</p>
+              <p className="text-xl font-semibold">{criticalPatients}</p>
             </div>
           </div>
         </motion.div>
@@ -77,7 +132,7 @@ export function DoctorDashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-500">Today's Appointments</p>
-              <p className="text-xl font-semibold">8</p>
+              <p className="text-xl font-semibold">{todaysAppointments}</p>
             </div>
           </div>
         </motion.div>
@@ -87,7 +142,7 @@ export function DoctorDashboard() {
       <div>
         <h2 className="text-xl font-semibold mb-4">Patients Requiring Attention</h2>
         <div className="space-y-4">
-          {mockPatients.map((patient) => (
+          {filteredPatients.map((patient) => (
             <motion.div
               key={patient.id}
               whileHover={{ scale: 1.01 }}
