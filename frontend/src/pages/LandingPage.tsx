@@ -65,18 +65,21 @@ function LandingPage() {
       </section>
 
       {/* buttons  */}
-      <button 
-        onClick={() => navigate("/doctor")} 
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-      >
-        Go to Doctor Dashboard
-      </button>
-      <button 
-        onClick={() => navigate("/patient")} 
-        className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-      >
-        Go to Patient Dashboard
-      </button>
+      <div className="flex justify-between mx-5">
+  <button 
+    onClick={() => navigate("/doctor")} 
+    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+  >
+    Go to Doctor Dashboard
+  </button>
+  <button 
+    onClick={() => navigate("/patient")} 
+    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+  >
+    Go to Patient Dashboard
+  </button>
+</div>
+
     </div>
   );
 }
