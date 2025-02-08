@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Patient = require('../models/Patient');
+const Doctor = require('../models/Doctor');
 
 const router = express.Router();
 
@@ -28,6 +29,13 @@ router.post('/register', async (req, res) => {
         condition: req.body.condition
       });
       await patient.save();
+    }
+    if(role=== 'doctor')
+    {
+        const doctor= new Doctor({
+            userId:user._id,
+            specialization:req.body.specialization
+        })
     }
     
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
