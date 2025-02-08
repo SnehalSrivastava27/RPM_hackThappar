@@ -59,22 +59,15 @@ function LandingPage() {
         </div>
         <div className="flex-1 max-w-lg">
           <h1 className="text-4xl leading-tight mb-4">
-          How Does RPM Work? <span className="text-[#27B4E8] font-bold text-5xl">
+          How Does RPM Work? <span className="text-[#27B4E8] font-bold text-2xl">
           Transforming health data into proactive care.
-          ✔ Patients use smart medical devices to track vital signs.
-          ✔ Data is transmitted instantly to healthcare professionals.
-          ✔ Our team analyzes real-time insights to detect abnormalities.
-          ✔ Immediate medical action when needed—before complications arise.
+          ✔ Patients use smart medical devices to track vital signs. <br />
+          ✔ Data is transmitted instantly to healthcare professionals. <br />
+          ✔ Our team analyzes real-time insights to detect abnormalities. <br />
+          ✔ Immediate medical action when needed—before complications arise. <br />
           </span>
           </h1>
-          <p className="text-lg text-white opacity-90 mb-6">
-            InfoBionic.Ai's MoMe ARC® is recognized as the leader in remote cardiac ECG quality, evidenced by our
-            collaboration with today's leading institutions. Our renowned virtual telemetry solutions set the highest
-            standard in continuous monitoring capability to enable more proactive and timely cardiac interventions.
-          </p>
-          <a href="#proof" className="bg-[#27B4E8] text-white px-8 py-4 rounded-full font-bold text-lg inline-block hover:bg-[#1a9ed2]">
-            ShowMe the Proof
-          </a>
+
         </div>
       </section>
     </div>
