@@ -6,7 +6,7 @@ import type { Patient } from '../types';
 const mockPatients: Patient[] = [
   {
     id: '1',
-    name: 'John Doe',
+    name: 'Mr X',
     age: 45,
     gender: 'Male',
     condition: 'Hypertension',
@@ -47,7 +47,7 @@ export function DoctorDashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-500">Total Patients</p>
-              <p className="text-xl font-semibold">248</p>
+              <p className="text-xl font-semibold">1</p>
             </div>
           </div>
         </motion.div>
