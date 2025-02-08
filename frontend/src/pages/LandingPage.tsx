@@ -2,6 +2,8 @@ import React from "react";
 import image1 from "../images/image1.jpg";
 import { useNavigate } from "react-router-dom";
 
+import Footer from "./footer";
+
 function LandingPage() {
   const navigate = useNavigate();
   return (
@@ -80,6 +82,10 @@ function LandingPage() {
 
         </div>
       </section>
+
+      <Footer />
+
+
 
       
 
