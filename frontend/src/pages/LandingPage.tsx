@@ -2,11 +2,13 @@ import React from "react";
 import image1 from "../images/image1.jpg";
 import { useNavigate } from "react-router-dom";
 
+import Footer from "./footer";
+
 function LandingPage() {
   const navigate = useNavigate();
   return (
     
-    <div className="bg-gradient-to-br from-[#0B0B2B] to-[#1B1B4B] text-white min-h-screen">
+    <div className="w-full flex flex-col justify-center items-center bg-gradient-to-br from-[#0B0B2B] to-[#1B1B4B] text-white min-h-screen">
       {/* Navbar */}
       <nav className="flex justify-between items-center py-5 px-20">
         <div className="flex items-center gap-10">
@@ -27,6 +29,23 @@ function LandingPage() {
           <span className="text-white text-xl">🔍</span>
         </div>
       </nav>
+
+      {/* buttons  */}
+      <div className="flex ">
+  <button 
+    onClick={() => navigate("/login")} 
+    className=" ml-[650px] px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+  >
+    Login
+  </button>
+
+  <button 
+    onClick={() => navigate("/signup")} 
+    className="ml-[20px] px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+  >
+    Signup
+  </button>
+</div>
 
       {/* Hero Section */}
       <section className="flex px-20 py-16 relative overflow-hidden">
@@ -64,21 +83,11 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* buttons  */}
-      <div className="flex justify-between mx-5">
-  <button 
-    onClick={() => navigate("/login")} 
-    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-  >
-    Login
-  </button>
-  <button 
-    onClick={() => navigate("/signup")} 
-    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-  >
-    Signup
-  </button>
-</div>
+      <Footer />
+
+
+
+      
 
     </div>
   );
