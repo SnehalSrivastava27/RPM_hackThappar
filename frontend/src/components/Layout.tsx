@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Home, MessageSquare, Calendar, FileText, User, Menu } from 'lucide-react';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Home, MessageSquare, Calendar, FileText, User, Menu } from "lucide-react";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -8,20 +8,29 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const location = useLocation();
-  const isDoctor = location.pathname.startsWith('/doctor');
-  const isPatient = location.pathname.startsWith('/patient');
-  const isLandingPage = location.pathname === '/';
+  const pathname = location.pathname;
 
+  // Define valid routes for doctor and patient dashboards
+  const doctorRoutes = ["/doctor", "/doctor/chat", "/doctor/appointments", "/doctor/reports"];
+  const patientRoutes = ["/patient", "/patient/chat", "/patient/appointments", "/patient/reports"];
+
+  const isLandingPage = pathname === "/";
+  const isDoctorDashboard = doctorRoutes.includes(pathname);
+  const isPatientDashboard = patientRoutes.includes(pathname);
+
+  // Set dashboard title
   const dashboardTitle = isLandingPage
-    ? 'Welcome'
-    : isDoctor
-    ? 'Doctor Dashboard'
-    : 'Patient Dashboard';
+    ? "Welcome"
+    : isDoctorDashboard
+    ? "Doctor Dashboard"
+    : isPatientDashboard
+    ? "Patient Dashboard"
+    : "";
 
   return (
-    <div className={`min-h-screen ${isLandingPage ? 'bg-white' : 'bg-gradient-to-br from-gray-50 to-blue-50'}`}>
+    <div className={`min-h-screen ${isLandingPage ? "bg-white" : "bg-gradient-to-br from-gray-50 to-blue-50"}`}>
       {/* Top Navigation (Hidden on Landing Page) */}
-      {!isLandingPage && (
+      {!isLandingPage && dashboardTitle && (
         <header className="bg-white shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
@@ -42,19 +51,23 @@ export function Layout({ children }: LayoutProps) {
       )}
 
       {/* Main Content */}
-      <main className={`${isLandingPage ? 'w-full min-h-screen flex items-center justify-center p-0' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'}`}>
+      <main
+        className={`${
+          isLandingPage ? "w-full min-h-screen flex items-center justify-center p-0" : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+        }`}
+      >
         {children}
       </main>
 
-      {/* Bottom Navigation (Only for Doctor & Patient Dashboards) */}
-      {!(isLandingPage) && (isDoctor || isPatient) && (
+      {/* Bottom Navigation (Only for specific Doctor & Patient Dashboard Pages) */}
+      {(isDoctorDashboard || isPatientDashboard) && (
         <nav className="fixed bottom-0 w-full bg-white border-t border-gray-200">
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex justify-around py-3">
-              <NavLink to={isDoctor ? "/doctor" : "/patient"} icon={<Home />} label="Home" />
-              <NavLink to={isDoctor ? "/doctor/chat" : "/patient/chat"} icon={<MessageSquare />} label="Chat" />
-              <NavLink to={isDoctor ? "/doctor/appointments" : "/patient/appointments"} icon={<Calendar />} label="Appointments" />
-              <NavLink to={isDoctor ? "/doctor/reports" : "/patient/reports"} icon={<FileText />} label="Reports" />
+              <NavLink to={isDoctorDashboard ? "/doctor" : "/patient"} icon={<Home />} label="Home" />
+              <NavLink to={isDoctorDashboard ? "/doctor/chat" : "/patient/chat"} icon={<MessageSquare />} label="Chat" />
+              <NavLink to={isDoctorDashboard ? "/doctor/appointments" : "/patient/appointments"} icon={<Calendar />} label="Appointments" />
+              <NavLink to={isDoctorDashboard ? "/doctor/reports" : "/patient/reports"} icon={<FileText />} label="Reports" />
             </div>
           </div>
         </nav>
@@ -70,9 +83,7 @@ function NavLink({ to, icon, label }: { to: string; icon: React.ReactNode; label
   return (
     <Link
       to={to}
-      className={`flex flex-col items-center space-y-1 ${
-        isActive ? 'text-blue-600' : 'text-gray-600'
-      }`}
+      className={`flex flex-col items-center space-y-1 ${isActive ? "text-blue-600" : "text-gray-600"}`}
     >
       {icon}
       <span className="text-xs">{label}</span>

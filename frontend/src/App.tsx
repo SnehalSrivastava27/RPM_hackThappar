@@ -4,6 +4,7 @@ import {Layout} from './components/Layout';
 import {PatientDashboard} from './pages/PatientDashboard';
 import {DoctorDashboard} from './pages/DoctorDashboard';
 import LandingPage from './pages/LandingPage';
+import { Login, Signup } from './pages/Auth';
 
 function App() {
   return (
@@ -13,6 +14,8 @@ function App() {
           <Route path="/" element={<LandingPage/>} />
           <Route path="/doctor" element={<DoctorDashboard />} />
           <Route path="/patient" element={<PatientDashboard />} />
+          <Route path='/signup' element={<Signup/>}></Route>
+          <Route path='/login' element={<Login/>}></Route> 
         </Routes>
       </Layout>
     </Router>
