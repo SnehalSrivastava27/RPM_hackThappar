@@ -1,41 +1,47 @@
 const express = require('express');
+const router = express.Router();
 const auth = require('../middlewares/auth');
 const checkRole = require('../middlewares/checkRole');
+const Doctor = require('../models/Doctor');
 const Patient = require('../models/Patient');
-const Vitals = require('../models/Vitals');
+const User = require('../models/User');
 
-const router = express.Router();
-
-router.get('/patients', auth, checkRole('doctor'), async (req, res) => {
+// Get doctor's patients with latest vitals
+router.get('/my-patients', auth, checkRole('doctor'), async (req, res) => {
   try {
-    const patients = await Patient.find({ assignedDoctor: req.user._id })
-      .populate('userId', ['name', 'email']);
-    res.send(patients);
+    const doctor = await Doctor.findOne({ userId: req.user._id });
+    if (!doctor) {
+      return res.status(404).send({ error: 'Doctor not found' });
+    }
+
+    const patients = await Patient.find({ doctorId: doctor._id })
+      .populate('userId', ['name', 'email'])
+      .populate({
+        path: 'vitals',
+        options: { sort: { timestamp: -1 }, limit: 1 }
+      });
+
+    const formattedPatients = patients.map(patient => {
+      const latestVitals = patient.vitals[0] || null;
+      return {
+        id: patient._id,
+        name: patient.userId.name,
+        age: patient.age,
+        gender: patient.gender,
+        condition: patient.condition,
+        riskLevel: patient.riskLevel,
+        vitals: latestVitals,
+        lastUpdate: patient.lastVitalUpdate ? new Date(patient.lastVitalUpdate).toLocaleString() : 'No updates'
+      };
+    });
+
+    res.send({
+      patients: formattedPatients,
+      totalPatients: patients.length
+    });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send(error);
   }
 });
 
-router.get('/patient/:id/vitals', auth, checkRole('doctor'), async (req, res) => {
-  try {
-    const vitals = await Vitals.find({ patientId: req.params.id })
-      .sort({ timestamp: -1 })
-      .limit(10);
-    res.send(vitals);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
-router.patch('/patient/:id/frequency', auth, checkRole('doctor'), async (req, res) => {
-  try {
-    const patient = await Patient.findById(req.params.id);
-    patient.vitalCheckFrequency = req.body.frequency;
-    await patient.save();
-    res.send(patient);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
-module.exports = router;
+module.exports = router
