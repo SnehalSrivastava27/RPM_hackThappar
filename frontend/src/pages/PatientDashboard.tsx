@@ -3,7 +3,7 @@ import { VitalsCard } from '../components/VitalsCard';
 import { RiskIndicator } from '../components/RiskIndicator';
 import { Bell, Trophy, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
-
+import { PatientDoctorSearch } from '../components/PatientDoctorSearch';
 const mockVitals = {
   heartRate: 75,
   bloodPressure: { systolic: 120, diastolic: 80 },
@@ -75,6 +75,9 @@ export function PatientDashboard() {
             </div>
           </div>
         </motion.button>
+      </div>
+      <div className='pb-8'>
+      <PatientDoctorSearch />
       </div>
     </div>
   );

@@ -44,4 +44,34 @@ router.get('/my-patients', auth, checkRole('doctor'), async (req, res) => {
   }
 });
 
+router.get('/appointment-requests', auth, checkRole('doctor'), async (req, res) => {
+    try {
+      const requests = await AppointmentRequest.find({ doctorId: req.user._id }).populate('patientId'); 
+      res.send(requests); 
+    } catch (error) {
+      res.status(500).send(error); 
+    }
+  });
+  
+  // Update the status of an appointment request (Approve/Reject)
+  router.put('/appointment-requests/:requestId', auth, checkRole('doctor'), async (req, res) => {
+    try {
+      const request = await AppointmentRequest.findByIdAndUpdate(req.params.requestId, { status: req.body.status }, { new: true }); // "new: true" returns the updated document
+      if (!request) {
+        return res.status(404).send({ message: 'Request not found' }); 
+      }
+      res.send(request); 
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  });
+  
+router.get('/all-doctors', async (req, res) => {
+  try {
+    const doctors = await User.find({ role: 'doctor' }, 'name'); // Only fetch 'name' field
+    res.send(doctors);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 module.exports = router

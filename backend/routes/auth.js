@@ -34,8 +34,8 @@ router.post('/register', async (req, res) => {
     {
         const doctor= new Doctor({
             userId:user._id,
-            specialization:req.body.specialization
         })
+        await doctor.save();
     }
     
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);

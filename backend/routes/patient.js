@@ -83,4 +83,22 @@ router.post('/assign-doctor', auth, checkRole('patient'), async (req, res) => {
     }
   });
 
+  router.post('/appointment-request', auth, checkRole('patient'), async (req, res) => {
+    try {
+      const patient = await Patient.findOne({ userId: req.user._id });
+      const { doctorId, reason } = req.body;
+  
+      const request = new AppointmentRequest({
+        patientId: patient._id,
+        doctorId, 
+        reason,
+      });
+  
+      await request.save();
+      res.status(201).send(request);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }); 
+
 module.exports = router;

@@ -32,6 +32,7 @@ export function DoctorDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [pendingRequests, setPendingRequests] = useState([]);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -58,6 +59,30 @@ export function DoctorDashboard() {
     };
 
     fetchDashboardData();
+  }, []);
+
+  useEffect(() => {
+    const fetchPendingRequests = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:3000/api/doctor/appointment-requests', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }); 
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch appointment requests');
+        }
+
+        const requestsData = await response.json();
+        setPendingRequests(requestsData.filter(request => request.status === 'Pending'));
+      } catch (err) {
+        console.error('Error fetching pending requests:', err);
+      }
+    };
+
+    fetchPendingRequests();
   }, []);
 
   const filteredPatients = dashboardData.patients.filter(patient =>
@@ -173,6 +198,8 @@ export function DoctorDashboard() {
           ))}
         </div>
       </div>
+      {/* request*/}
+      
     </div>
   );
 }
