@@ -20,7 +20,6 @@ const mockPatients: Patient[] = [
     },
     lastUpdate: '5 minutes ago'
   },
-  // Add more mock patients as needed
 ];
 
 export function DoctorDashboard() {
