@@ -45,9 +45,9 @@ const Login = () => {
 
       // Redirect based on role
       if (data.user.role === 'doctor') {
-        navigate('/doctor-dashboard');
+        navigate('/doctor');
       } else {
-        navigate('/patient-dashboard');
+        navigate('/patient');
       }
     } catch (err) {
       setError(err.message);
@@ -169,9 +169,9 @@ const Signup = () => {
 
       // Redirect based on role
       if (data.user.role === 'doctor') {
-        navigate('/doctor-dashboard');
+        navigate('/doctor');
       } else {
-        navigate('/patient-dashboard');
+        navigate('/patient');
       }
     } catch (err) {
       setError(err.message);
