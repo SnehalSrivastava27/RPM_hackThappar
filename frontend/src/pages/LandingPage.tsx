@@ -34,11 +34,11 @@ function LandingPage() {
       {/* Hero Section */}
       <section className="flex px-20 py-16 relative overflow-hidden">
         <div className="max-w-2xl">
-          <h2 className="text-2xl mb-4">The Virtual Cardiac Telemetry Company</h2>
-          <h1 className="text-5xl font-bold leading-tight mb-6">
-            The first to market, highest quality AI-enabled remote cardiac monitoring system. Recognized as the
-            <span className="text-yellow-400"> gold standard in remote cardiac care.</span>
-          </h1>
+          <h1 className="text-5xl mb-4">Revolutionizing Healthcare with Remote Patient Monitoring (RPM)</h1>
+          <h2 className="text-2xl font-bold leading-tight mb-6">
+          Your health, in your hands—our technology ensures your well-being from anywhere. Experience real-time monitoring, early intervention, and seamless virtual care with our cutting-edge RPM services.
+          Stay Connected. Stay Healthy.
+          </h2>
           <a href="#seeing-is-believing" className="bg-yellow-400 text-black px-8 py-4 rounded-full font-bold text-lg inline-block">
             Seeing is Believing
           </a>
@@ -59,7 +59,13 @@ function LandingPage() {
         </div>
         <div className="flex-1 max-w-lg">
           <h1 className="text-4xl leading-tight mb-4">
-            Where cardiac data <span className="text-[#27B4E8] font-bold text-5xl">becomes clinical insight.</span>
+          How Does RPM Work? <span className="text-[#27B4E8] font-bold text-5xl">
+          Transforming health data into proactive care.
+          ✔ Patients use smart medical devices to track vital signs.
+          ✔ Data is transmitted instantly to healthcare professionals.
+          ✔ Our team analyzes real-time insights to detect abnormalities.
+          ✔ Immediate medical action when needed—before complications arise.
+          </span>
           </h1>
           <p className="text-lg text-white opacity-90 mb-6">
             InfoBionic.Ai's MoMe ARC® is recognized as the leader in remote cardiac ECG quality, evidenced by our
