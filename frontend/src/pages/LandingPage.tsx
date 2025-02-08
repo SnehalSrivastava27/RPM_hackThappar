@@ -11,7 +11,7 @@ function LandingPage() {
     <div className="w-full flex flex-col justify-center items-center bg-gradient-to-br from-[#0B0B2B] to-[#1B1B4B] text-white min-h-screen">
       {/* Navbar */}
       <nav className="flex justify-between items-center py-5 px-20">
-        <div className="flex items-center gap-10">
+        <div className="flex items-center gap-20">
           {[
             "Products",
             "What We Solve",
@@ -48,7 +48,7 @@ function LandingPage() {
 
       {/* Hero Section */}
       <section className="flex px-20 py-16 relative overflow-hidden">
-        <div className="max-w-2xl">
+        <div className="max-w-[80vw]">
           <h1 className="text-5xl mb-4">Revolutionizing Healthcare with Remote Patient Monitoring (RPM)</h1>
           <h2 className="text-2xl font-bold leading-tight mb-6">
           Your health, in your hands—our technology ensures your well-being from anywhere. Experience real-time monitoring, early intervention, and seamless virtual care with our cutting-edge RPM services.
