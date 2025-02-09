@@ -4,9 +4,20 @@ export interface Patient {
   age: number;
   gender: string;
   condition: string;
-  riskLevel: 'Low' | 'Moderate' | 'High';
-  vitals: Vitals;
+  riskLevel: string;
+  vitals: {
+    heartRate?: number;
+    bloodPressure?: { systolic: number; diastolic: number };
+    temperature?: number;
+    spO2?: number;
+    glucose?: number;
+  } | null;
   lastUpdate: string;
+  approvedAppointments: Array<{
+    appointmentId: string;
+    reason: string;
+    requestDate: string;
+  }>;
 }
 
 export interface Vitals {

@@ -3,24 +3,24 @@ import { Search, Users, Bell, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Patient } from '../types';
 
-const mockPatients: Patient[] = [
-  {
-    id: '1',
-    name: 'Mr X',
-    age: 45,
-    gender: 'Male',
-    condition: 'Hypertension',
-    riskLevel: 'Moderate',
-    vitals: {
-      heartRate: 85,
-      bloodPressure: { systolic: 140, diastolic: 90 },
-      temperature: 98.6,
-      spO2: 97,
-      glucose: 110
-    },
-    lastUpdate: '5 minutes ago'
-  },
-];
+// const mockPatients: Patient[] = [
+//   {
+//     id: '1',
+//     name: 'Mr X',
+//     age: 45,
+//     gender: 'Male',
+//     condition: 'Hypertension',
+//     riskLevel: 'Moderate',
+//     vitals: {
+//       heartRate: 85,
+//       bloodPressure: { systolic: 140, diastolic: 90 },
+//       temperature: 98.6,
+//       spO2: 97,
+//       glucose: 110
+//     },
+//     lastUpdate: '5 minutes ago'
+//   },
+// ];
 
 export function DoctorDashboard() {
   return (

@@ -1,8 +1,8 @@
-const axios = require('axios');
 require('dotenv').config(); 
+const axios = require('axios');
 class AIWrapper {
     constructor() {
-        this.apiKey = process.env.GOOGLE_APPLICATION_CREDENTIALS|| "YOUR_GOOGLE_FIT_API_KEY";
+        this.apiKey = process.env.GEMINI_API_KEY|| "YOUR_GOOGLE_FIT_API_KEY";
         this.apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
 
         this.healthTopics = [

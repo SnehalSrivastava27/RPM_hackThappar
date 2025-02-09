@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Search, Users, Bell, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
-
 interface Patient {
   id: string;
   name: string;
@@ -10,13 +9,18 @@ interface Patient {
   condition: string;
   riskLevel: string;
   vitals: {
-    heartRate: number;
-    bloodPressure: { systolic: number; diastolic: number };
-    temperature: number;
-    spO2: number;
-    glucose: number;
-  };
+    heartRate?: number;
+    bloodPressure?: { systolic: number; diastolic: number };
+    temperature?: number;
+    spO2?: number;
+    glucose?: number;
+  } | null;
   lastUpdate: string;
+  approvedAppointments: Array<{
+    appointmentId: string;
+    reason: string;
+    requestDate: string;
+  }>;
 }
 
 interface DashboardData {
@@ -34,6 +38,32 @@ export function DoctorDashboard() {
   const [error, setError] = useState('');
   const [pendingRequests, setPendingRequests] = useState([]);
 
+  // useEffect(() => {
+  //   const fetchDashboardData = async () => {
+  //     try {
+  //       const token = localStorage.getItem('token');
+  //       const response = await fetch('http://localhost:3000/api/doctor/my-patients', {
+  //         headers: {
+  //           'Authorization': `Bearer ${token}`
+  //         }
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch dashboard data');
+  //       }
+
+  //       const data = await response.json();
+  //       setDashboardData(data);
+  //     } catch (err) {
+  //       setError('Failed to load dashboard data');
+  //       console.error(err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchDashboardData();
+  // }, []);
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
@@ -43,12 +73,13 @@ export function DoctorDashboard() {
             'Authorization': `Bearer ${token}`
           }
         });
-
+  
         if (!response.ok) {
           throw new Error('Failed to fetch dashboard data');
         }
-
+  
         const data = await response.json();
+        console.log('Received dashboard data:', data); // Add this log
         setDashboardData(data);
       } catch (err) {
         setError('Failed to load dashboard data');
@@ -57,10 +88,12 @@ export function DoctorDashboard() {
         setLoading(false);
       }
     };
-
+  
     fetchDashboardData();
   }, []);
-
+  useEffect(() => {
+    console.log('Dashboard data updated:', dashboardData);
+  }, [dashboardData])
   useEffect(() => {
     const fetchPendingRequests = async () => {
       try {
@@ -199,7 +232,90 @@ export function DoctorDashboard() {
         </div>
       </div>
       {/* request*/}
-      
+      {/* Approved Appointments Section */}
+<div>
+  <h2 className="text-xl font-semibold mb-4">Approved Appointments</h2>
+  <div className="space-y-4">
+    {filteredPatients.map((patient) => (
+      patient.approvedAppointments && patient.approvedAppointments.length > 0 && (
+        <motion.div
+          key={patient.id}
+          whileHover={{ scale: 1.01 }}
+          className="bg-white p-4 rounded-xl shadow-sm"
+        >
+          <div className="flex justify-between items-start">
+            <div>
+              <h3 className="font-medium">{patient.name}</h3>
+              {patient.approvedAppointments.map((appointment) => (
+                <div key={appointment.appointmentId} className="mt-2">
+                  <p className="text-sm text-gray-500">
+                    Reason: {appointment.reason}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Date: {new Date(appointment.requestDate).toLocaleString()}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      )
+    ))}
+  </div>
+</div>
+    {/* Patient List */}
+<div>
+  <h2 className="text-xl font-semibold mb-4">Patients Requiring Attention</h2>
+  <div className="space-y-4">
+    {filteredPatients.length > 0 ? (
+      filteredPatients.map((patient) => (
+        <motion.div
+          key={patient.id}
+          whileHover={{ scale: 1.01 }}
+          className="bg-white p-4 rounded-xl shadow-sm"
+        >
+          <div className="flex justify-between items-start">
+            <div>
+              <h3 className="font-medium">{patient.name}</h3>
+              <p className="text-sm text-gray-500">
+                {patient.age} years • {patient.gender} • {patient.condition}
+              </p>
+              <div className="mt-2">
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                  patient.riskLevel === 'High' ? 'bg-red-100 text-red-800' :
+                  patient.riskLevel === 'Moderate' ? 'bg-yellow-100 text-yellow-800' :
+                  'bg-green-100 text-green-800'
+                }`}>
+                  {patient.riskLevel} Risk
+                </span>
+              </div>
+              {patient.vitals && (
+                <div className="mt-2 text-sm text-gray-600">
+                  <p>Latest Vitals:</p>
+                  {patient.vitals.heartRate && <p>Heart Rate: {patient.vitals.heartRate} bpm</p>}
+                  {patient.vitals.bloodPressure && (
+                    <p>BP: {patient.vitals.bloodPressure.systolic}/{patient.vitals.bloodPressure.diastolic}</p>
+                  )}
+                  {patient.vitals.temperature && <p>Temperature: {patient.vitals.temperature}°C</p>}
+                  {patient.vitals.spO2 && <p>SpO2: {patient.vitals.spO2}%</p>}
+                  {patient.vitals.glucose && <p>Glucose: {patient.vitals.glucose} mg/dL</p>}
+                </div>
+              )}
+            </div>
+            <div className="text-right">
+              <p className="text-sm text-gray-500">Last update</p>
+              <p className="text-sm font-medium">{patient.lastUpdate}</p>
+            </div>
+          </div>
+        </motion.div>
+      ))
+    ) : (
+      <div className="text-center py-4 text-gray-500">
+        No patients found
+      </div>
+    )}
+  </div>
+</div>
     </div>
   );
 }

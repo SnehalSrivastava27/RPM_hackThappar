@@ -7,7 +7,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const patientRoutes = require('./routes/patient');
 const doctorRoutes = require('./routes/doctor');
-
+const aiRoutes=require('./routes/aiRoutes');
 const app = express();
 
 // Middleware
@@ -18,6 +18,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/patient', patientRoutes);
 app.use('/api/doctor', doctorRoutes);
+app.use('/api/ai',aiRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)

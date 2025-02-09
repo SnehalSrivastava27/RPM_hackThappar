@@ -7,8 +7,9 @@ const Alert = require('../models/Alert');
 const mongoose = require('mongoose'); 
 const AppointmentRequest = require('../models/AppointmentRequest');
 const { checkVitalsThresholds } = require('../utils/vitalHelper');
-
+const AIWrapper = require('../utils/AIWrapper');
 const router = express.Router();
+const ai=new AIWrapper();
 
 router.post('/vitals', auth, checkRole('patient'), async (req, res) => {
   try {
@@ -116,6 +117,17 @@ router.post('/assign-doctor', auth, checkRole('patient'), async (req, res) => {
     } catch (error) {
       console.error("Error in appointment-request:", error);
       res.status(400).json({ message: error.message });
+    }
+  });
+
+  router.get('/get-health-data', async (req, res) => {
+    try {
+      const healthTip = await aiWrapper.getHealthTips('general');
+      const challenge = await aiWrapper.generateChallenge();
+      res.json({ healthTip, challenge });
+    } catch (error) {
+      console.error("Error fetching AI data:", error);
+      res.status(500).json({ error: 'Failed to fetch AI data' }); // Send JSON error response 
     }
   });
   
