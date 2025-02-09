@@ -9,19 +9,20 @@ import DoctorDashboardAppointment from './pages/DoctorDashboardAppointment';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/">
       <Layout>
         <Routes>
-          <Route path="/" element={<LandingPage/>} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/doctor" element={<DoctorDashboard />} />
           <Route path="/patient" element={<PatientDashboard />} />
-          <Route path='/signup' element={<Signup/>}></Route>
-          <Route path='/login' element={<Login/>}></Route> 
-          <Route path='/doctor/appointments' element={<DoctorDashboardAppointment/>}></Route>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/doctor/appointments" element={<DoctorDashboardAppointment />} />
         </Routes>
       </Layout>
     </Router>
   );
 }
+
 
 export default App;
