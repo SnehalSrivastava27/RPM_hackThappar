@@ -65,7 +65,7 @@ export function Layout({ children }: LayoutProps) {
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex justify-around py-3">
               <NavLink to={isDoctorDashboard ? "/doctor" : "/patient"} icon={<Home />} label="Home" />
-              <NavLink to={isDoctorDashboard ? "/doctor/chat" : "/patient/chat"} icon={<MessageSquare />} label="Chat" />
+              {/* <NavLink to={isDoctorDashboard ? "/doctor/chat" : "/patient/chat"} icon={<MessageSquare />} label="Chat" /> */}
               <NavLink to={isDoctorDashboard ? "/doctor/appointments" : "/patient/appointments"} icon={<Calendar />} label="Appointments" />
               <NavLink to={isDoctorDashboard ? "/doctor/reports" : "/patient/reports"} icon={<FileText />} label="Reports" />
             </div>

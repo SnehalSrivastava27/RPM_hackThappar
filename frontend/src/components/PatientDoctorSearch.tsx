@@ -6,6 +6,7 @@ export function PatientDoctorSearch() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [requestReason, setRequestReason] = useState(''); // State for the reason
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -34,54 +35,44 @@ export function PatientDoctorSearch() {
     setShowConfirmDialog(true);
   };
 
-//   const handleConfirmRequest = async () => {
-//     try {
-//       const token = localStorage.getItem('token');
-//       const response = await fetch('http://localhost:3000/api/patient/appointment-request', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'Authorization': `Bearer ${token}`,
-//         },
-//         body: JSON.stringify({ doctorId: selectedDoctor._id, reason: 'Appointment Request' }),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error('Failed to send appointment request');
-//       }
-
-//       console.log('Appointment request sent!');
-//       setShowConfirmDialog(false);
-//     } catch (error) {
-//       console.error('Error sending request:', error);
-//     }
-//   };
-const handleConfirmRequest = async () => {
+  const handleConfirmRequest = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3000/api/patient/appointment-request', { 
+      console.log("Token:", token);
+      console.log("Selected Doctor:", selectedDoctor);
+      console.log("Request Reason:", requestReason);
+  
+      if (!token) {
+        throw new Error("User is not authenticated. Token is missing.");
+      }
+  
+      const response = await fetch('http://localhost:3000/api/patient/appointment-request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ doctorId: selectedDoctor._id, reason: 'Appointment Request' }),
+        body: JSON.stringify({ 
+          doctorId: selectedDoctor?._id, 
+          reason: requestReason || "No reason provided"
+        }),
       });
-
+  
       if (!response.ok) {
-        throw new Error('Failed to send appointment request'); 
+        const errorData = await response.json();
+        throw new Error(`Failed to send appointment request: ${errorData.message || response.status}`);
       }
-
-      // Handle success (e.g., close dialog, show success message)
-      console.log('Appointment request sent!'); 
+  
+      console.log('Appointment request sent successfully!');
       setShowConfirmDialog(false);
-      setSelectedDoctor(null); // Reset selected doctor
-
+      setSelectedDoctor(null);
+  
     } catch (error) {
-      console.error('Error sending request:', error);
-      // Handle error, e.g., display an error message to the user
+      console.error('Error sending request:', error.message);
     }
   };
+  
+
   return (
     <div>
       <h2>Find a Doctor</h2>
@@ -113,6 +104,17 @@ const handleConfirmRequest = async () => {
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <p>Are you sure you want to send an appointment request to Dr. {selectedDoctor.name}?</p>
+
+            {/* Input for Reason */}
+            <div className="mt-2"> 
+              <textarea 
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter a reason for your request (optional)" 
+                value={requestReason}
+                onChange={e => setRequestReason(e.target.value)}
+              />
+            </div>
+
             <div className="mt-4 flex justify-end">
               <button
                 onClick={() => setShowConfirmDialog(false)}

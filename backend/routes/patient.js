@@ -4,6 +4,8 @@ const checkRole = require('../middlewares/checkRole');
 const Patient = require('../models/Patient');
 const Vitals = require('../models/Vitals');
 const Alert = require('../models/Alert');
+const mongoose = require('mongoose'); 
+const AppointmentRequest = require('../models/AppointmentRequest');
 const { checkVitalsThresholds } = require('../utils/vitalHelper');
 
 const router = express.Router();
@@ -85,8 +87,23 @@ router.post('/assign-doctor', auth, checkRole('patient'), async (req, res) => {
 
   router.post('/appointment-request', auth, checkRole('patient'), async (req, res) => {
     try {
+      console.log("User from auth middleware:", req.user);  // Check user authentication
       const patient = await Patient.findOne({ userId: req.user._id });
+      console.log("Patient found:", patient);  // Ensure the patient exists
+  
       const { doctorId, reason } = req.body;
+      console.log("Received doctorId:", doctorId);
+      console.log("Received reason:", reason);
+  
+      if (!patient) {
+        return res.status(400).json({ message: "Patient not found" });
+      }
+      if (!doctorId) {
+        return res.status(400).json({ message: "doctorId is required" });
+      }
+      if (!mongoose.Types.ObjectId.isValid(doctorId)) {
+        return res.status(400).json({ message: "Invalid doctorId format" });
+      }
   
       const request = new AppointmentRequest({
         patientId: patient._id,
@@ -97,8 +114,10 @@ router.post('/assign-doctor', auth, checkRole('patient'), async (req, res) => {
       await request.save();
       res.status(201).send(request);
     } catch (error) {
-      res.status(400).send(error);
+      console.error("Error in appointment-request:", error);
+      res.status(400).json({ message: error.message });
     }
-  }); 
+  });
+  
 
 module.exports = router;
