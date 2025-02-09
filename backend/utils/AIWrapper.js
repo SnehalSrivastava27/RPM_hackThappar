@@ -1,8 +1,8 @@
 const axios = require('axios');
-
+require('dotenv').config(); 
 class AIWrapper {
     constructor() {
-        this.apiKey = process.env.GOOGLE_FIT_API_KEY || "YOUR_GOOGLE_FIT_API_KEY";
+        this.apiKey = process.env.GOOGLE_APPLICATION_CREDENTIALS|| "YOUR_GOOGLE_FIT_API_KEY";
         this.apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
 
         this.healthTopics = [
@@ -26,6 +26,15 @@ class AIWrapper {
             return "I encountered an issue retrieving data.";
         }
     }
+    async generateChallenge() {
+        const prompts = [
+          "Suggest a challenging but achievable physical activity for someone trying to be more active.",
+          "Recommend a healthy eating challenge for someone trying to improve their diet.",
+          // Add more challenge prompts as needed
+        ];
+        const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+        return await this.callGeminiAPI(randomPrompt);
+      }
 
     async getHealthTips(topic) {
         return await this.callGeminiAPI(`Provide detailed health tips on ${topic}`);

@@ -1,18 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { VitalsCard } from '../components/VitalsCard';
 import { RiskIndicator } from '../components/RiskIndicator';
 import { Bell, Trophy, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { PatientDoctorSearch } from '../components/PatientDoctorSearch';
+
 const mockVitals = {
   heartRate: 75,
   bloodPressure: { systolic: 120, diastolic: 80 },
   temperature: 98.6,
   spO2: 98,
-  glucose: 95
+  glucose: 95,
 };
 
 export function PatientDashboard() {
+  const [aiResponse, setAiResponse] = useState('');
+  const [challenge, setChallenge] = useState('');
+
+  useEffect(() => {
+    const fetchAiData = async () => {
+      try {
+        const response = await fetch('/api/get-health-data'); 
+        if (!response.ok) { 
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setAiResponse(data.healthTip);
+        setChallenge(data.challenge);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setAiResponse('Error loading health tip.'); // Display a user-friendly error
+        setChallenge('Error loading challenge.'); 
+      }
+    };
+  
+    fetchAiData();
+  }, []);
+
   return (
     <div className="space-y-6">
       {/* Emergency Alert Button */}
@@ -47,13 +71,15 @@ export function PatientDashboard() {
                 <Trophy className="h-6 w-6 text-yellow-500" />
               </div>
               <div>
-                <p className="font-medium">Walk 5,000 Steps</p>
+                <p className="font-medium">{challenge}</p> 
+                {/* Display the fetched challenge here */}
                 <div className="w-48 h-2 bg-gray-200 rounded-full mt-2">
                   <div className="w-3/4 h-2 bg-yellow-500 rounded-full" />
                 </div>
               </div>
             </div>
-            <p className="text-lg font-semibold">3,750/5,000</p>
+            {/* Update progress dynamically */}
+            <p className="text-lg font-semibold">3,750/5,000</p> 
           </div>
         </motion.div>
       </div>
@@ -75,9 +101,11 @@ export function PatientDashboard() {
             </div>
           </div>
         </motion.button>
+        {/* Display the AI response */}
+        <p>{aiResponse}</p> 
       </div>
       <div className='pb-8'>
-      <PatientDoctorSearch />
+        <PatientDoctorSearch />
       </div>
     </div>
   );

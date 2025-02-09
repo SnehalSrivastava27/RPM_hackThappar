@@ -40,4 +40,16 @@ router.post('/query', async (req, res) => {
     }
 });
 
+router.get('/get-health-data', async (req, res) => {
+    try {
+      const healthTip = await aiWrapper.getHealthTips('general');
+      const challenge = await aiWrapper.generateChallenge();
+      res.json({ healthTip, challenge });
+    } catch (error) {
+      console.error("Error fetching AI data:", error);
+      res.status(500).json({ error: 'Failed to fetch AI data' }); // Send JSON error response 
+    }
+  });
+
+
 module.exports = router;
