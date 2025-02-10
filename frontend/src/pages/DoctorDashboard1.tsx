@@ -1,7 +1,6 @@
 import React from 'react';
 import { Search, Users, Bell, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
-import type { Patient } from '../types';
 
 // const mockPatients: Patient[] = [
 //   {
